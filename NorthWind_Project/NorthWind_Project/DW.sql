@@ -7,7 +7,7 @@ GO
 
 CREATE TABLE [dbo].[DimCustomer](
     [CustomerSK] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    [CustomerID] [nchar](5) NOT NULL, 
+    [CustomerID] [nchar](5) NOT NULL,
     [CompanyName] [nvarchar](40) NOT NULL,
     [City] [nvarchar](15) NULL,
     [Country] [nvarchar](15) NULL
@@ -119,11 +119,11 @@ CREATE TABLE [staging].[Orders](
     [OrderDate] [datetime] NULL,
     [RequiredDate] [datetime] NULL,
     [ShippedDate] [datetime] NULL,
-    [CustomerID] [nchar](5) NULL,
+    [CustomerID] [nvarchar](50 NULL,
     [EmployeeID] [int] NULL,
     [ShipVia] [int] NULL,
-    [Quantity] [smallint] NULL,
-    [UnitPrice] [decimal](10,2) NULL,
-    [Discount] [decimal](10,2) NULL
+    [Quantity] [int] NULL,
+    [UnitPrice] [decimal](182) NULL,
+    [Discount] [decimal](18,2) NULL
 );
 GO
