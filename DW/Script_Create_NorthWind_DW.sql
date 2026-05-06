@@ -1,3 +1,6 @@
+/* =====================================================
+   - CREACION DEL DW
+   ===================================================== */
 -- Crear esquema de Staging para el proceso ETL
 CREATE SCHEMA [staging];
 GO
