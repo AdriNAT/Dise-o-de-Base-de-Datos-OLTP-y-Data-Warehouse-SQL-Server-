@@ -25,7 +25,7 @@ GO
 CREATE TABLE [dbo].[DimProduct](
     [ProductSK] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
     [ProductID] [int] NOT NULL,
-    [ProductName] [nvarchar](30) NOT NULL,
+    [ProductName] [nvarchar](40) NOT NULL,
     [CategoryName] [nvarchar](15) NOT NULL,
     [SupplierName] [nvarchar](40) NOT NULL,
     [UnitPrice] [decimal](10,2) NULL, 
