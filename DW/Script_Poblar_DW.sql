@@ -68,7 +68,7 @@ GO
 INSERT INTO [dbo].[FactSales] (
     OrderID, ProductID, OrderDateKey, RequiredDateKey, ShippedDateKey,
     CustomerSK, EmployeeSK, ProductSK, ShipperSK,
-    Quantity, UnitPrice, Discount
+    Quantity, UnitPrice, Discount,LineTotal
 )
 SELECT 
     o.OrderID,
@@ -83,6 +83,7 @@ SELECT
     od.Quantity,
     od.UnitPrice,
     od.Discount
+    CAST((od.Quantity * od.UnitPrice) * (1 - od.Discount) AS MONEY)
 FROM Northwind.dbo.Orders o
 INNER JOIN Northwind.dbo.[Order Details] od ON o.OrderID = od.OrderID
 LEFT JOIN [dbo].[DimCustomer] dc ON o.CustomerID = dc.CustomerID
