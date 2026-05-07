@@ -1,53 +1,66 @@
 -- Crear esquema de Staging para el proceso ETL
 CREATE SCHEMA [staging];
 GO
+
 -- =============================================
 -- 1. TABLAS DE DIMENSIONES (Capa dbo)
 -- =============================================
 
 CREATE TABLE [dbo].[DimCustomer](
-    [CustomerSK] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    [CustomerID] [nchar](5) NOT NULL, 
-    [CompanyName] [nvarchar](40) NOT NULL,
-    [City] [nvarchar](15) NULL,
-    [Country] [nvarchar](15) NULL
+	[CustomerSK] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[CustomerID] [nchar](5) NOT NULL, 
+	[CompanyName] [nvarchar](40) NOT NULL,
+	[ContactName] [nvarchar](30) NULL,
+	[City] [nvarchar](15) NULL,
+	[Region] [nvarchar](15) NULL,
+	[Country] [nvarchar](15) NULL,
+	[Phone] [nvarchar](24) NULL
 );
 GO
 
 CREATE TABLE [dbo].[DimEmployee](
-    [EmployeeSK] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    [EmployeeID] [int] NOT NULL,
-    [FullName] [nvarchar](40) NOT NULL,
-    [Title] [nvarchar](30) NULL
+	[EmployeeSK] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[EmployeeID] [int] NOT NULL,
+	[LastName] [nvarchar](20) NOT NULL,
+	[FirstName] [nvarchar](10) NOT NULL,
+	[Title] [nvarchar](30) NULL,
+	[Email] [varchar](255) NOT NULL,
+	[Phone] [varchar](25) NULL,
+	[ReportsTo] [int] NULL -- Para jerarquías
 );
 GO
 
 CREATE TABLE [dbo].[DimProduct](
-    [ProductSK] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    [ProductID] [int] NOT NULL,
-    [ProductName] [nvarchar](40) NOT NULL,
-    [CategoryName] [nvarchar](15) NOT NULL,
-    [SupplierName] [nvarchar](40) NOT NULL,
-    [UnitPrice] [decimal](10,2) NULL, 
-    [Discontinued] [bit] NOT NULL
+	[ProductSK] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ProductID] [int] NOT NULL,
+	[ProductName] [nvarchar](40) NOT NULL,
+	[CategoryName] [nvarchar](15) NOT NULL,
+	[SupplierName] [nvarchar](40) NOT NULL,
+	[UnitPrice] [decimal](10,2) NULL, 
+	[Discontinued] [bit] NOT NULL
 );
 GO
 
 CREATE TABLE [dbo].[DimShipper](
-    [ShipperSK] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-    [ShipperID] [int] NOT NULL,
-    [CompanyName] [nvarchar](40) NOT NULL
+	[ShipperSK] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[ShipperID] [int] NOT NULL,
+	[CompanyName] [nvarchar](40) NOT NULL,
+	[Phone] [nvarchar](24) NULL
 );
 GO
 
 CREATE TABLE [dbo].[DimDate](
-    [DateKey] [int] NOT NULL PRIMARY KEY, 
-    [FullDate] [date] NOT NULL,
-    [Year] [int] NOT NULL,
-    [Quarter] [int] NOT NULL,
-    [Month] [int] NOT NULL,
-    [MonthName] [nvarchar](15) NOT NULL,
-    [Day] [int] NOT NULL
+	[DateKey] [int] NOT NULL PRIMARY KEY, 
+	[FullDate] [date] NOT NULL,
+	[Year] [nvarchar](20) NOT NULL,
+	[YearName] [int] NOT NULL,
+	[Day] [int] NOT NULL,
+	[DayName] [nvarchar](15) NOT NULL,
+	[Month] [int] NOT NULL,
+	[MonthName] [nvarchar](15) NOT NULL,
+	[CalendarQuarter] [tinyint] NOT NULL,
+	[CalendarYear] [smallint] NOT NULL,
+	[CalendarSemester] [tinyint] NOT NULL
 );
 GO
 
@@ -56,27 +69,27 @@ GO
 -- =============================================
 
 CREATE TABLE [dbo].[FactSales](
-    [OrderID] [int] NOT NULL,
-    [ProductID] [int] NOT NULL,
-    [OrderDateKey] [int] NOT NULL,
-    [RequiredDateKey] [int] NOT NULL,
-    [ShippedDateKey] [int] NULL,
-    
-    -- Claves Sustitutas (SK) - NOT NULL para integridad
-    [CustomerSK] [int] NOT NULL,
-    [EmployeeSK] [int] NOT NULL,
-    [ProductSK] [int] NOT NULL,
-    [ShipperSK] [int] NOT NULL,
-    
-    -- Métricas con tipos de datos solicitados
-    [Quantity] [smallint] NOT NULL,
-    [UnitPrice] [decimal](10,2) NOT NULL, -- Ajustado a decimal(10,2)
-    [Discount] [decimal](10,2) NOT NULL,  -- Ajustado a decimal(10,2)
-    
-    -- Métrica Calculada Persistida como MONEY
-    [LineTotal] AS (CAST(([Quantity] * [UnitPrice]) * (1 - [Discount]) AS MONEY)) PERSISTED,
-    
-    CONSTRAINT [PK_FactSales] PRIMARY KEY CLUSTERED ([OrderID], [ProductID])
+	[OrderID] [int] NOT NULL,
+	[ProductID] [int] NOT NULL,
+	[OrderDateKey] [int] NOT NULL,
+	[RequiredDateKey] [int] NOT NULL,
+	[ShippedDateKey] [int] NULL,
+
+	-- Claves Sustitutas (SK) - NOT NULL para integridad
+	[CustomerSK] [int] NOT NULL,
+	[EmployeeSK] [int] NOT NULL,
+	[ProductSK] [int] NOT NULL,
+	[ShipperSK] [int] NOT NULL,
+
+	-- Métricas con tipos de datos solicitados
+	[Quantity] [smallint] NOT NULL,
+	[UnitPrice] [decimal](10,2) NOT NULL, -- Ajustado a decimal(10,2)
+	[Discount] [decimal](10,2) NOT NULL,  -- Ajustado a decimal(10,2)
+
+	-- Métrica Calculada Persistida como MONEY
+	[LineTotal] AS (CAST(([Quantity] * [UnitPrice]) * (1 - [Discount]) AS MONEY)) PERSISTED,
+
+	CONSTRAINT [PK_FactSales] PRIMARY KEY CLUSTERED ([OrderID], [ProductID])
 );
 GO
 
@@ -103,27 +116,64 @@ GO
 -- 4. CAPA DE STAGING (Tablas para carga ETL)
 -- =============================================
 
-CREATE TABLE [staging].[Product](
-    [ProductID] [int] NULL,
-    [ProductName] [nvarchar](40) NULL,
-    [CategoryName] [nvarchar](15) NULL,
-    [SupplierName] [nvarchar](40) NULL,
-    [UnitPrice] [decimal](10,2) NULL,
-    [Discontinued] [bit] NULL
+CREATE TABLE [staging].[Orders](
+	[OrderID] [int] NOT NULL,
+	[ProductID] [int] NOT NULL,
+	[OrderDateKey] [int] NOT NULL,
+	[RequiredDateKey] [int] NOT NULL,
+	[ShippedDateKey] [int] NULL,
+	[CustomerSK] [int] NOT NULL,
+	[EmployeeSK] [int] NOT NULL,
+	[ProductSK] [int] NOT NULL,
+	[ShipperSK] [int] NOT NULL,
+	[CustomerID] [nchar](5) NULL,
+	[EmployeeID] [int] NOT NULL,
+	[ShipVia] [int] NOT NULL,
+	[Quantity] [smallint] NOT NULL,
+	[UnitPrice] [decimal](10,2) NOT NULL,
+	[Discount] [decimal](10,2) NOT NULL
 );
 GO
 
-CREATE TABLE [staging].[Orders](
-    [OrderID] [int] NULL,
-    [ProductID] [int] NULL,
-    [OrderDate] [datetime] NULL,
-    [RequiredDate] [datetime] NULL,
-    [ShippedDate] [datetime] NULL,
-    [CustomerID] [nchar](5) NULL,
-    [EmployeeID] [int] NULL,
-    [ShipVia] [int] NULL,
-    [Quantity] [smallint] NULL,
-    [UnitPrice] [decimal](10,2) NULL,
-    [Discount] [decimal](10,2) NULL
+CREATE TABLE [staging].[Customer](
+	[CustomerSK] [int] NOT NULL,
+	[CustomerID] [nchar](5) NOT NULL, 
+	[CompanyName] [nvarchar](40) NOT NULL,
+	[ContactName] [nvarchar](30) NULL,
+	[City] [nvarchar](15) NULL,
+	[Region] [nvarchar](15) NULL,
+	[Country] [nvarchar](15) NULL,
+	[Phone] [nvarchar](24) NULL
+);
+GO
+
+CREATE TABLE [staging].[Employee](
+	[EmployeeSK] [int] NOT NULL,
+	[EmployeeID] [int] NOT NULL,
+	[LastName] [nvarchar](20) NOT NULL,
+	[FirstName] [nvarchar](10) NOT NULL,
+	[Title] [nvarchar](30) NULL,
+	[Email] [varchar](255) NOT NULL,
+	[Phone] [varchar](25) NULL,
+	[ReportsTo] [int] NULL 
+);
+GO
+
+CREATE TABLE [staging].[Product](
+	[ProductSK] [int] NOT NULL,
+	[ProductID] [int] NOT NULL,
+	[ProductName] [nvarchar](40) NOT NULL,
+	[CategoryName] [nvarchar](15) NOT NULL,
+	[SupplierName] [nvarchar](40) NOT NULL,
+	[UnitPrice] [decimal](10,2) NULL, 
+	[Discontinued] [bit] NOT NULL
+);
+GO
+
+CREATE TABLE [staging].[Shipper](
+	[ShipperSK] [int] NOT NULL,
+	[ShipperID] [int] NOT NULL,
+	[CompanyName] [nvarchar](40) NOT NULL,
+	[Phone] [nvarchar](24) NULL
 );
 GO
