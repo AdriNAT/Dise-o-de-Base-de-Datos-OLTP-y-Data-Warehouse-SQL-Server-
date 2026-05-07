@@ -1,104 +1,114 @@
-#  Northwind Data Warehouse
+# Diseño-de-Base-de-Datos-OLTP-y-Data-Warehouse-SQL-Server-
 
-**Módulo 2: Arquitectura de Datos  
-**Fuente de datos:** NorthWind (SQL Server)  
+Proyecto OLTP y Data Warehouse basado en Northwind (SQL Server)
 
----
+\# Proyecto: Data Warehouse de Ventas (Northwind)
 
-##  Descripción del Proyecto
 
-Este proyecto consiste en la transformación de una base de datos transaccional (OLTP) en un modelo analítico (Data Warehouse) utilizando el dataset **Northwind**.
 
----
+Este repositorio contiene el diseño, desarrollo e implementación de un modelo analítico (Data Warehouse) basado en la base de datos transaccional (OLTP) de Northwind. 
 
-##  Arquitectura de la Solución
 
-Se implementó un **Modelo Estrella ** orientado al análisis de ventas.
 
-###  Tabla de Hechos
-`FactSales`
+\*\*Dominio del negocio seleccionado:\*\* Ventas.
 
-* `Quantity` (Cantidad)
-* `UnitPrice` (Precio Unitario)
-* `Discount` (Descuento)
-* `LineTotal` (Total de venta, calculado)
 
-###  Tablas de Dimensión
-* `DimCustomer`: Información de clientes.
-* `DimEmployee`: Información de empleados/vendedores.
-* `DimProduct`: Productos, categorías y proveedores.
-* `DimShipper`: Empresas de envío.
-* `DimDate`: Dimensión de tiempo (año, mes, día, etc.).
 
----
+\---
 
-##  Proceso ETL (Extract, Transform, Load)
 
-El proceso de carga de datos se realizó mediante scripts en SQL Server:
 
-* **Extracción:** Datos obtenidos desde la base _Northwind_ (OLTP).
-* **Transformación:** Limpieza, conversión de tipos y normalización.
-* **Carga:** Inserción en el Data Warehouse.
+\##  1. Modelo Transaccional (OLTP)
 
-###  Consideraciones técnicas:
-* Se utilizó conversión de fechas (`CAST`) para asegurar consistencia con la dimensión tiempo.
-* Se aplicaron `JOINs` entre tablas OLTP para poblar correctamente la tabla de hechos.
-* Se garantizó la integridad referencial entre dimensiones y hechos.
+El modelo de origen está diseñado para soportar la operativa diaria de la empresa (procesamiento de transacciones).
 
----
+\* \*\*Dominio:\*\* Gestión de ventas, clientes, empleados, inventarios de productos y envíos.
 
-##  Modelo OLTP
+\* \*\*Reglas de negocio básicas:\*\* 
 
-El sistema transaccional base corresponde a _Northwind_, el cual maneja:
-* Clientes
-* Pedidos
-* Productos
-* Empleados
-* Envíos
+&#x20; - Un Cliente puede realizar muchos pedidos.
 
-📁 **Ubicación:** `OLTP/`
+&#x20; - Cada pedido es procesado por un Empleado y enviado por un Transportista (Shipper).
 
----
+&#x20; - Un pedido puede contener múltiples detalles de productos.
 
-##  Data Warehouse (DW)
 
-Contiene el modelo estrella y scripts de carga:
 
-📁 **Ubicación:** `DW/`
-* Scripts de creación de tablas.
-* Scripts ETL (población de datos).
-* Diagrama del modelo estrella.
+\*(El diagrama y los scripts de origen se encuentran en la carpeta `1\_OLTP`)\*.
 
----
 
-##  Proyecto DACPAC
 
-Se utilizó Visual Studio (SQL Server Data Tools - SSDT) para gestionar el esquema del Data Warehouse.
+\---
 
-📁 **Ubicación:** `NorthWind_Project/`
-📦 **Archivo generado:** `.dacpac`
 
----
 
-##  Instrucciones de Despliegue
+\##  2. Modelo Analítico (Data Warehouse - DW)
 
-### 1. Usando DACPAC
-1. Abrir **SQL Server Management Studio (SSMS)**.
-2. Hacer clic derecho en el nodo "Bases de datos".
-3. Seleccionar **"Implementar aplicación de capa de datos..."**
-4. Cargar el archivo `.dacpac` desde la ruta `NorthWind_Project/bin/Debug/`.
-5. Seguir el asistente.
+Para facilitar el análisis de toma de decisiones, se diseñó un modelo dimensional basado en un \*\*Esquema de Estrella\*\*.
 
-### 2. Ejecutar ETL
-Una vez desplegada la base de datos:
 
- Ejecutar el script de carga ubicado en:
-`DW/` (script ETL)
 
----
+\* \*\*Tabla de Hechos (Fact Table):\*\* `FactSales`
 
-##  Tecnologías Utilizadas
-* SQL Server
-* SQL Server Management Studio (SSMS)
-* Visual Studio 2022 (SSDT)
-* GitHub
+\* \*\*Métricas Principales (Facts):\*\* 
+
+&#x20; - Cantidad (`Quantity`)
+
+&#x20; - Precio Unitario (`UnitPrice`)
+
+&#x20; - Descuento (`Discount`)
+
+&#x20; - Total de Línea (`LineTotal` - Persistido como tipo `MONEY`).
+
+\* \*\*Dimensiones (Dimensions):\*\*
+
+&#x20; - `DimCustomer`: Datos del cliente.
+
+&#x20; - `DimEmployee`: Datos del vendedor.
+
+&#x20; - `DimProduct`: Detalles del catálogo de productos y proveedores.
+
+&#x20; - `DimShipper`: Datos de la empresa de transporte.
+
+&#x20; - `DimDate`: Dimensión de tiempo para análisis por fechas.
+
+
+
+\*(El diagrama de estrella y el script de carga ETL se encuentran en la carpeta `2\_DW`)\*.
+
+
+
+\---
+
+
+
+\##  3. Proyecto DACPAC (SQL Server Data Tools)
+
+La estructura del Data Warehouse fue modelada utilizando un proyecto de Visual Studio (SSDT). Esto permite el control de versiones del esquema y despliegues estandarizados.
+
+
+
+La carpeta `NorthWind\_Project` contiene la solución compilada.
+
+\*\*Ubicación del empaquetado:\*\* `NorthWind\_Project/bin/Debug/NorthWind\_Project.dacpac`
+
+
+
+\---
+
+
+
+\##  Instrucciones de Despliegue
+
+
+
+\### Despliegue de Esquema vía DACPAC 
+
+1\. Abrir SQL Server Management Studio (SSMS).
+
+2\. Hacer clic derecho sobre "Bases de datos" > \*\*Implementar aplicación de capa de datos...\*\*
+
+3\. Cargar el archivo `NorthWind\_Project.dacpac` y seguir el asistente.
+
+4\. Una vez generada la estructura, ejecutar el script de inserción (ETL) ubicado en `2\_DW/Script\_Poblar\_DW.sql`.
+
