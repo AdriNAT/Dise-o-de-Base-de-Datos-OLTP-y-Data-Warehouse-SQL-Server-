@@ -1,4 +1,11 @@
 # Diseño-de-Base-de-Datos-OLTP-y-Data-Warehouse-SQL-Server-
+Integrantes :
+
+Ayala Torrico Adriana Nicole 
+Poma Limache Alisson Daniela 
+Sotillo Sanchez Luis Antonio
+Fuentes Rios Beatriz
+Canaviri Yanahuaya Alexander Sergio
 
 Proyecto OLTP y Data Warehouse basado en Northwind (SQL Server)
 
