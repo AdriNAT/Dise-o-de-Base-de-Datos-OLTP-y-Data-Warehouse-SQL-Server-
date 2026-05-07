@@ -21,6 +21,17 @@ Canaviri Yanahuaya Alexander Sergio
 Este proyecto consiste en la transformación de una base de datos transaccional (OLTP) en un modelo analítico (Data Warehouse) utilizando el dataset **Northwind**.
 
 ---
+## 📊 Modelo de Datos
+
+A continuación, se presentan los diagramas que representan la estructura técnica del proyecto, desde su origen transaccional hasta su destino analítico.
+
+### Diagrama ER (Data Warehouse)
+Representa la base de datos original Northwind normalizada en 3FN.
+![Diagrama OLTP](img/Data_Model.png)
+
+### Data Model (Data Warehouse)
+
+![Diagrama Modelo Estrella DW](img/ER_Diagram.png)
 
 ##  Arquitectura de la Solución
 
