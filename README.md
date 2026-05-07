@@ -29,7 +29,6 @@ A continuación, se presentan los diagramas que representan la estructura técni
 ![Diagrama OLTP](img/Data_Model.png)
 
 ### Data Model (Data Warehouse)
-
 ![Diagrama Modelo Estrella DW](img/ER_Diagram.png)
 
 ##  Arquitectura de la Solución
