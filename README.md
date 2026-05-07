@@ -25,10 +25,11 @@ Este proyecto consiste en la transformación de una base de datos transaccional 
 
 A continuación, se presentan los diagramas que representan la estructura técnica del proyecto, desde su origen transaccional hasta su destino analítico.
 
-### Diagrama ER (Data Warehouse)
-![Diagrama OLTP](img/Data_Model.png)
 
 ### Data Model (Data Warehouse)
+![Diagrama OLTP](img/Data_Model.png)
+
+### Diagrama ER (Data Warehouse)
 ![Diagrama Modelo Estrella DW](img/ER_Diagram.png)
 
 ##  Arquitectura de la Solución
