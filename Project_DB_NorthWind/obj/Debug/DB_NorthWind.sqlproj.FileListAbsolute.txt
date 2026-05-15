@@ -1,6 +1,0 @@
-C:\Users\LASS\source\repos\DB_NorthWind\bin\Debug\DB_NorthWind.dacpac
-C:\Users\LASS\source\repos\DB_NorthWind\bin\Debug\DB_NorthWind.dll
-C:\Users\LASS\source\repos\DB_NorthWind\bin\Debug\DB_NorthWind.pdb
-C:\Users\LASS\source\repos\DB_NorthWind\obj\Debug\DB_NorthWind.sqlproj.AssemblyReference.cache
-C:\Users\LASS\source\repos\DB_NorthWind\obj\Debug\DB_NorthWind.dll
-C:\Users\LASS\source\repos\DB_NorthWind\obj\Debug\DB_NorthWind.pdb
