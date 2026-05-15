@@ -1,22 +1,30 @@
 #  Northwind Data Warehouse
-Integrantes :
+# 👥 Integrantes del grupo
 
 | Apellido y Nombre |
-| :--- | :--- |
+| :--- |
 | Ayala Torrico Adriana Nicole |
-| Poma Limache Alisson Daniela  |
+| Poma Limache Alisson Daniela |
 | Sotillo Sanchez Luis Antonio |
 | Fuentes Rios Beatriz |
-| Canaviri Yanahuaya Alexander Sergio |
-
-**Módulo 2: Arquitectura de Datos  
-**Fuente de datos:** NorthWind (SQL Server)  
+| Canaviri Yanahuaya Alexander Sergio | 
 
 ---
 
-##  Descripción del Proyecto
+# 📋 Descripción del proyecto
 
-Este proyecto consiste en la transformación de una base de datos transaccional (OLTP) en un modelo analítico (Data Warehouse) utilizando el dataset **Northwind**.
+Dominio de negocio: Ventas y distribución
+
+El sistema gestiona el flujo transaccional completo de una empresa distribuidora mediante una base de datos en 3FN.
+Permite administrar de forma centralizada catálogos de productos, carteras de clientes y redes de empleados por territorios , su diseño está optimizado para asegurar la integridad de los datos en procesos complejos de facturación y despacho.
+
+Componentes principales:
+
+✅ OLTP (NorthWindOLTP)
+✅ DW (NorthWindDW)
+✅ ETL (NorthWindETL)
+✅ DACPAC
+
 
 ---
 ## 📊 Modelo de Datos
@@ -24,13 +32,13 @@ Este proyecto consiste en la transformación de una base de datos transaccional 
 A continuación, se presentan los diagramas que representan la estructura técnica del proyecto, desde su origen transaccional hasta su destino analítico.
 
 
-### Data Model (Data Warehouse)
+### 🏛️ Data Model (Data Warehouse)
 ![Diagrama OLTP](img/Data_Model.png)
 
-### Diagrama ER (Data Warehouse)
+### 📑Diagrama ER (Data Warehouse)
 ![Diagrama Modelo Estrella DW](img/ER_Diagram.png)
 
-##  Arquitectura de la Solución
+## 🗺️ Arquitectura de la Solución
 
 Se implementó un **Modelo Estrella ** orientado al análisis de ventas.
 
