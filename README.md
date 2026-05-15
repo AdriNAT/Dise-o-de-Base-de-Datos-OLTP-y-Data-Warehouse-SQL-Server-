@@ -4,10 +4,10 @@
 | Apellido y Nombre |
 | :--- |
 | Ayala Torrico Adriana Nicole |
-| Poma Limache Alisson Daniela |
-| Sotillo Sanchez Luis Antonio |
+| Canaviri Yanahuaya Alexander Sergio |
 | Fuentes Rios Beatriz |
-| Canaviri Yanahuaya Alexander Sergio | 
+| Poma Limache Alisson Daniela |
+| Sotillo Sanchez Luis Antonio | 
 
 ---
 
