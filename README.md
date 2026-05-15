@@ -216,7 +216,63 @@ El proceso de carga de datos se realizó mediante SQL Server Integration Service
 
 
 ```
+# ⚙️ Instrucciones de Despliegue
+### 📜 Opción A: 
 
+Requisitos: SQL Server + Integration Services + Visual Studio con SSDT
+
+Para garantizar la integridad referencial del **Data Warehouse**, ejecute los paquetes de **SSIS** estrictamente en el siguiente orden:
+
+| Paso | Paquete | Acción |
+| :--- | :--- | :--- |
+| 1️⃣ | `Customer.dtsx` | Carga de Clientes |
+| 2️⃣ | `Employee.dtsx` | Carga de Empleados |
+| 3️⃣ | `Products.dtsx` | Carga de Productos y Categorías |
+| 4️⃣ | `Shipper.dtsx` | Carga de Transportistas |
+| 🏁 | **`Orders.dtsx`** | **Carga de Hechos (FactOrders)** |
+
+### 📜 Opción B: 
+Ejecutar en el siguiente orden estricto para asegurar la integridad de los datos:
+1. 📁 `scripts/01_OLTP_Northwind_Full.sql` — Crear y poblar origen.
+2. 📁 `scripts/02_DW_Schema_final.sql` — Crear esquema del DW.
+3. 📁 `scripts/04_Poblar_Dimensiones.sql` — Cargar datos maestros.
+4. 📁 `scripts/03_Carga_fact_Orders.sql` — Cargar hechos (**Siempre al final**).
+
+### 📦 Opción C: DACPAC
+Ideal para entornos de producción en **SQL Server Management Studio (SSMS)**:
+1. Clic derecho en **Databases** ➔ **Deploy Data-tier Application...**
+2. Seleccionar `dacpac/Northwind.dacpac` para desplegar el **OLTP**.
+3. Repetir el proceso con `dacpac/Northwind_DW.dacpac` para el **DW**.
+---
+## ✅ Validación de datos
+```sql
+-- Validar que los registros cargados coincidan con el origen
+SELECT COUNT(*) AS Clientes FROM Northwind.dbo.Customers;      -- Esperado: 91
+SELECT COUNT(*) AS Pedidos FROM Northwind.dbo.Orders;          -- Esperado: 830
+SELECT COUNT(*) AS Detalles FROM Northwind.dbo.OrderDetails;    -- Esperado: 2,155
+
+-- Validar integridad en el DW
+SELECT COUNT(*) AS FactOrders FROM NorthWindDW.dbo.FactOrders;   -- Esperado: 2,155
+
+SELECT 'OLTP' AS Fuente, SUM(Quantity * UnitPrice * (1 - Discount)) AS TotalVentas 
+FROM Northwind.dbo.Orders
+UNION ALL
+SELECT 'DW', SUM(ExtendedPrice) 
+FROM NorthWindDW.dbo.FactOrders;
+```
+# 📦 Gestión de Esquema con DACPAC
+
+Este proyecto utiliza **SQL Server Data Tools (SSDT)** en Visual Studio para la gestión del ciclo de vida de la base de datos, permitiendo un despliegue consistente y versionado del esquema del Data Warehouse.
+
+---
+
+## 🏗️ Estructura del Proyecto DACPAC
+
+| Componente | Detalle |
+| :--- | :--- |
+| 🛠️ **Herramienta** | Visual Studio (SQL Server Data Tools - SSDT) |
+| 📂 **Ubicación** | `NorthWind_Project/` |
+| 📦 **Artefacto** | Archivo `.dacpac` (Data-tier Application Package) |
 
 ---
 
