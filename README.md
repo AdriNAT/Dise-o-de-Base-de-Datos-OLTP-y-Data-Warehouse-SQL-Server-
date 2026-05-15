@@ -31,12 +31,9 @@ Componentes principales:
 
 A continuación, se presentan los diagramas que representan la estructura técnica del proyecto, desde su origen transaccional hasta su destino analítico.
 
+### 📑Diagrama ER
+<img width="976" height="791" alt="image" src="https://github.com/user-attachments/assets/05747896-6d8f-44df-b044-a35efcbd2f77" />
 
-### 🏛️ Data Model (Data Warehouse)
-![Diagrama OLTP](img/Data_Model.png)
-
-### 📑Diagrama ER (Data Warehouse)
-![Diagrama Modelo Estrella DW](img/ER_Diagram.png)
 
 ### 📊 Modelo Dimensional (Data Warehouse)
 
@@ -159,33 +156,67 @@ Para garantizar la integridad y eficiencia del flujo de datos, se implementaron 
 * 📈 **Control Incremental:** Uso de `GetLastPackageRowVersion` para extraer únicamente los cambios nuevos del OLTP, optimizando el tiempo de ejecución.
 * 🏗️ **Capa de Staging:** Implementación del esquema `[staging]` como zona de preparación y limpieza de datos (*Data Cleansing*) antes de la carga final.
 
----
+Diagrama del Modelo Estrella
+<img width="1082" height="881" alt="image" src="https://github.com/user-attachments/assets/92a964c4-e29c-46d9-a6a8-c24453e08d8e" />
 
 ---
-
-##  Proyecto DACPAC
-
-Se utilizó Visual Studio (SQL Server Data Tools - SSDT) para gestionar el esquema del Data Warehouse.
-
-📁 **Ubicación:** `NorthWind_Project/`
-📦 **Archivo generado:** `.dacpac`
-
----
-
-##  Instrucciones de Despliegue
-
-### 1. Usando DACPAC
-1. Abrir **SQL Server Management Studio (SSMS)**.
-2. Hacer clic derecho en el nodo "Bases de datos".
-3. Seleccionar **"Implementar aplicación de capa de datos..."**
-4. Cargar el archivo `.dacpac` desde la ruta `NorthWind_Project/bin/Debug/`.
-5. Seguir el asistente.
 
 ### 2. Ejecutar ETL
-Una vez desplegada la base de datos:
+---
 
- Ejecutar el script de carga ubicado en:
-`DW/` (script ETL)
+## 🔄 Proceso ETL — NorthwindETL (SSIS)
+
+El proyecto ETL fue desarrollado con **SQL Server Integration Services (SSIS)** y automatiza la extracción, transformación y carga de datos desde `NorthWindOLTP` hacia `NorthWindDW`.
+
+### 📦 Paquetes SSIS
+
+| Archivo | Tabla destino | Descripción |
+| :--- | :--- | :--- |
+| `Customer.dtsx` | `DimCustomer` | Carga clientes desde **Customers**. |
+| `Employee.dtsx` | `DimEmployee` | Carga empleados desde **Employees**. |
+| `Products.dtsx` | `DimProduct` | Carga productos con categoría y proveedor. |
+| `Shipper.dtsx` | `DimShipper` | Carga transportistas desde **Shippers**. |
+| `Sales.dtsx` | `FactOrders` | Carga hechos de ventas desde ** Orders**. |
+
+ **Orden de ejecución obligatorio:** Las dimensiones deben cargarse antes que la tabla de hechos. `Orders.dtsx` debe ejecutarse siempre al final.
+
+### 🛠️ Consideraciones técnicas:
+
+* Se utilizó conversión de fechas (**CAST**) para asegurar consistencia con la dimensión tiempo.
+* Se aplicaron **JOINs** entre tablas OLTP para poblar correctamente la tabla de hechos.
+* Se garantizó la **integridad referencial** entre dimensiones y hechos.
+---
+
+## 🔄 Proceso ETL — NorthwindETL (SSIS)
+
+El proyecto ETL automatiza la migración de datos desde el entorno transaccional hacia el analítico, asegurando la calidad y consistencia mediante paquetes de **SSIS**.
+
+### 🗺️ Diagrama de Flujo de Datos (Mermaid)
+
+---
+
+## 🔄 Proceso ETL — NorthwindETL (SSIS)
+
+El proceso de carga de datos se realizó mediante SQL Server Integration Services (SSIS), automatizando la extracción, transformación y carga desde **NorthWindOLTP** hacia **NorthWindDW**.
+
+### 🗺️ Flujo de Datos (Arquitectura)
+
+```text
+ NorthWindOLTP (Fuente)
+       │
+       ├─── Customer.dtsx ────▶ DimCustomer
+       ├─── Employee.dtsx ────▶ DimEmployee
+       ├─── Products.dtsx ────▶ DimProduct
+       ├─── Shipper.dtsx  ────▶ DimShipper
+       │        └─ (DimDate se genera desde script SQL)
+       │
+       └─── Orders.dtsx ───────▶ FactOrders
+                                   │
+                            NorthWindDW (Destino)
+
+
+```
+
 
 ---
 
