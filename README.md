@@ -1,15 +1,13 @@
 #  Northwind Data Warehouse
 Integrantes :
 
-Ayala Torrico Adriana Nicole 
-
-Poma Limache Alisson Daniela 
-
-Sotillo Sanchez Luis Antonio
-
-Fuentes Rios Beatriz
-
-Canaviri Yanahuaya Alexander Sergio
+| Apellido y Nombre |
+| :--- | :--- |
+| Ayala Torrico Adriana Nicole |
+| Poma Limache Alisson Daniela  |
+| Sotillo Sanchez Luis Antonio |
+| Fuentes Rios Beatriz |
+| Canaviri Yanahuaya Alexander Sergio |
 
 **Módulo 2: Arquitectura de Datos  
 **Fuente de datos:** NorthWind (SQL Server)  
