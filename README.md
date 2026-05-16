@@ -56,7 +56,7 @@ Componentes principales:
 
 ---
 
-## 5. Reglas de Empleados (Employees)
+## 4. Reglas de Empleados (Employees)
 
 | ID | Regla de Negocio | Tipo | Implementación |
 | :--- | :--- | :--- | :--- |
@@ -65,7 +65,26 @@ Componentes principales:
 
 ---
 
-## 6. Reglas de Control de Concurrencia
+## 5. Reglas de Transportistas (Shippers)
+
+| ID | Regla de Negocio | Tipo | Implementación |
+| :--- | :--- | :--- | :--- |
+| **RN-SHIP-01** | Cada transportista debe tener un identificador único numérico. | Estructural | `ShipperID INT NOT NULL PRIMARY KEY` |
+| **RN-SHIP-02** | El nombre de la empresa transportista es obligatorio. | Obligatoria | `CompanyName NVARCHAR(40) NOT NULL` |
+| **RN-SHIP-03** | El teléfono de contacto puede quedar registrado de manera opcional. | Formato | `Phone NVARCHAR(24) NULL` |
+
+---
+## 6. Reglas de  Fechas (Date)
+
+| ID | Regla de Negocio | Tipo | Implementación |
+| :--- | :--- | :--- | :--- |
+| **RN-DATE-01** | Cada registro de fecha debe tener una clave sustituta única (Surrogate Key) de tipo entero para el mapeo en el Data Warehouse. | Estructural | `DateKey INT NOT NULL PRIMARY KEY` |
+| **RN-DATE-02** | El campo de fecha completa en formato estándar es obligatorio para permitir filtros temporales continuos. | Obligatoria | `FullDate DATE NOT NULL` |
+| **RN-DATE-03** | Los atributos derivados (número de día, nombre del mes, año, trimestre) deben estar precalculados para optimizar el rendimiento de las consultas analíticas. | Rendimiento | `DayNumberOfWeek TINYINT`, `MonthName NVARCHAR(15)`, `CalendarYear INT NOT NULL`|
+
+---
+
+## 7. Reglas de Control de Concurrencia
 
 | ID | Regla de Negocio | Tipo | Implementación |
 | :--- | :--- | :--- | :--- |
