@@ -247,18 +247,13 @@ Ideal para entornos de producción en **SQL Server Management Studio (SSMS)**:
 ## ✅ Validación de datos
 ```sql
 -- Validar que los registros cargados coincidan con el origen
-SELECT COUNT(*) AS Clientes FROM Northwind.dbo.Customers;      -- Esperado: 91
-SELECT COUNT(*) AS Pedidos FROM Northwind.dbo.Orders;          -- Esperado: 830
-SELECT COUNT(*) AS Detalles FROM Northwind.dbo.OrderDetails;    -- Esperado: 2,155
+SELECT COUNT(*) AS Clientes FROM NorthwindOLTP.dbo.Customers;      -- Esperado: 91
+SELECT COUNT(*) AS Pedidos FROM NorthwindOLTP.dbo.Orders;          -- Esperado: 830
+SELECT COUNT(*) AS Detalles FROM NorthwindOLTP.dbo.OrderDetails;    -- Esperado: 2,155
 
 -- Validar integridad en el DW
 SELECT COUNT(*) AS FactOrders FROM NorthWindDW.dbo.FactOrders;   -- Esperado: 2,155
 
-SELECT 'OLTP' AS Fuente, SUM(Quantity * UnitPrice * (1 - Discount)) AS TotalVentas 
-FROM Northwind.dbo.Orders
-UNION ALL
-SELECT 'DW', SUM(ExtendedPrice) 
-FROM NorthWindDW.dbo.FactOrders;
 ```
 # 📦 Gestión de Esquema con DACPAC
 
@@ -279,5 +274,5 @@ Este proyecto utiliza **SQL Server Data Tools (SSDT)** en Visual Studio para la 
 ##  Tecnologías Utilizadas
 * SQL Server
 * SQL Server Management Studio (SSMS)
-* Visual Studio 2022 (SSDT)
+* Visual Studio 2026 (SSDT)
 * GitHub
