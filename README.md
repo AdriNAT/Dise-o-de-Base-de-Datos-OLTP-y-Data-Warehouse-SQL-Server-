@@ -24,7 +24,52 @@ Componentes principales:
 ✅ DW (NorthWindDW)
 ✅ ETL (NorthWindETL)
 ✅ DACPAC
+---
+## Reglas de Negocio 
+---
 
+## 1. Reglas de Clientes (Customers)
+
+| ID | Regla de Negocio | Tipo | Implementación |
+| :--- | :--- | :--- | :--- |
+| **RN-CUST-01** | Todo cliente debe tener un identificador único de 5 caracteres (alfanumérico). | Estructural | `CustomerID NCHAR(5) NOT NULL PRIMARY KEY` |
+| **RN-CUST-02** | El nombre de la empresa del cliente es obligatorio. | Obligatoria | `CompanyName NVARCHAR(40) NOT NULL` |
+
+---
+
+## 2. Reglas de Productos (Products)
+
+| ID | Regla de Negocio | Tipo | Implementación |
+| :--- | :--- | :--- | :--- |
+| **RN-PROD-01** | El nombre del producto es obligatorio. | Obligatoria | `ProductName NVARCHAR(40) NOT NULL` |
+| **RN-PROD-02** | El precio unitario no puede ser negativo. | Integridad | `CHECK ([UnitPrice] >= 0)` |
+| **RN-PROD-03** | Un producto puede ser discontinuado (no se puede vender después de discontinuado). | Estado | `Discontinued BIT NOT NULL` |
+
+---
+
+## 3. Reglas de Pedidos (Orders)
+
+| ID | Regla de Negocio | Tipo | Implementación |
+| :--- | :--- | :--- | :--- |
+| **RN-ORD-01** | Un pedido debe estar asociado a un cliente (opcionalmente puede no tenerlo para pedidos anónimos). | Relacional | `FK_Orders_Customers` |
+| **RN-ORD-02** | La fecha requerida es la fecha prometida al cliente. | Semántica | `RequiredDate DATETIME NULL` |
+
+---
+
+## 5. Reglas de Empleados (Employees)
+
+| ID | Regla de Negocio | Tipo | Implementación |
+| :--- | :--- | :--- | :--- |
+| **RN-EMP-01** | El nombre y apellido del empleado son obligatorios. | Obligatoria | `LastName NVARCHAR(20) NOT NULL`,<br>`FirstName NVARCHAR(10) NOT NULL` |
+| **RN-EMP-02** | Un empleado puede reportar a otro empleado (relación jerárquica). | Autorreferencial | `FK_Employees_Employees (ReportsTo)` |
+
+---
+
+## 6. Reglas de Control de Concurrencia
+
+| ID | Regla de Negocio | Tipo | Implementación |
+| :--- | :--- | :--- | :--- |
+| **RN-CC-01** | Toda tabla debe tener un campo `rowversion` (`timestamp`) para control de concurrencia optimista. | Técnica | Columna `rowversion timestamp NULL` en todas las tablas |
 
 ---
 ## 📊 Modelo de Datos
