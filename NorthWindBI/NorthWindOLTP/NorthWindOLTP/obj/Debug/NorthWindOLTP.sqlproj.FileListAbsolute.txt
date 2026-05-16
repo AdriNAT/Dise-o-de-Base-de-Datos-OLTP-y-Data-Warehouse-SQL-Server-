@@ -1,0 +1,8 @@
+C:\Users\DANIELA\Documents\DiseñoDBDataWarehouse\NorthWindBI\NorthWindOLTP\NorthWindOLTP\bin\Debug\NorthWindOLTP.dacpac
+C:\Users\DANIELA\Documents\DiseñoDBDataWarehouse\NorthWindBI\NorthWindOLTP\NorthWindOLTP\obj\Debug\NorthWindOLTP.sqlproj.AssemblyReference.cache
+C:\Users\DANIELA\Documents\DiseñoDBDataWarehouse\NorthWindBI\NorthWindOLTP\NorthWindOLTP\obj\Debug\Model.xml
+C:\Users\DANIELA\Documents\DiseñoDBDataWarehouse\NorthWindBI\NorthWindOLTP\NorthWindOLTP\obj\Debug\refactor.xml
+C:\Users\DANIELA\Documents\DiseñoDBDataWarehouse\NorthWindBI\NorthWindOLTP\NorthWindOLTP\obj\Debug\postdeploy.sql
+C:\Users\DANIELA\Documents\DiseñoDBDataWarehouse\NorthWindBI\NorthWindOLTP\NorthWindOLTP\obj\Debug\predeploy.sql
+C:\Users\DANIELA\Documents\DiseñoDBDataWarehouse\NorthWindBI\NorthWindOLTP\NorthWindOLTP\obj\Debug\NorthWindOLTP.dll
+C:\Users\DANIELA\Documents\DiseñoDBDataWarehouse\NorthWindBI\NorthWindOLTP\NorthWindOLTP\obj\Debug\NorthWindOLTP.pdb
