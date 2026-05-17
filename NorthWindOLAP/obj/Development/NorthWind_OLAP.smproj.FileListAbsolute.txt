@@ -1,8 +1,0 @@
-C:\Users\LASS\source\repos\NorthWind_OLAP\bin\NorthWind.asdatabase
-C:\Users\LASS\source\repos\NorthWind_OLAP\bin\NorthWind.deploymenttargets
-C:\Users\LASS\source\repos\NorthWind_OLAP\bin\NorthWind.deploymentoptions
-C:\Users\LASS\source\repos\NorthWind_OLAP\obj\Development\NorthWind_OLAP.smproj.AssemblyReference.cache
-C:\Users\LASS\source\repos\NorthWind_OLAP\obj\Development\NorthWind_OLAP.smproj.CoreCompileInputs.cache
-C:\Users\LASS\source\repos\NorthWind_OLAP\obj\Development\NorthWind.asdatabase
-C:\Users\LASS\source\repos\NorthWind_OLAP\obj\Development\NorthWind.deploymentoptions
-C:\Users\LASS\source\repos\NorthWind_OLAP\obj\Development\NorthWind.deploymenttargets
