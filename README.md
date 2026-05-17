@@ -253,14 +253,6 @@ El proyecto ETL fue desarrollado con **SQL Server Integration Services (SSIS)** 
 
 ## 🔄 Proceso ETL — NorthwindETL (SSIS)
 
-El proyecto ETL automatiza la migración de datos desde el entorno transaccional hacia el analítico, asegurando la calidad y consistencia mediante paquetes de **SSIS**.
-
-### 🗺️ Diagrama de Flujo de Datos (Mermaid)
-
----
-
-## 🔄 Proceso ETL — NorthwindETL (SSIS)
-
 El proceso de carga de datos se realizó mediante SQL Server Integration Services (SSIS), automatizando la extracción, transformación y carga desde **NorthWindOLTP** hacia **NorthWindDW**.
 
 ### 🗺️ Flujo de Datos (Arquitectura)
