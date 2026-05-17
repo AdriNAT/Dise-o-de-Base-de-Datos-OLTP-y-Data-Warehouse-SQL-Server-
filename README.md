@@ -280,6 +280,8 @@ El proceso de carga de datos se realizó mediante SQL Server Integration Service
 
 
 ```
+## Ejecucion del ETL 
+
 # ⚙️ Instrucciones de Despliegue
 ### 📜 Opción A: 
 
@@ -319,6 +321,20 @@ SELECT COUNT(*) AS Detalles FROM NorthwindOLTP.dbo.OrderDetails;    -- Esperado:
 SELECT COUNT(*) AS FactOrders FROM NorthWindDW.dbo.FactOrders;   -- Esperado: 2,155
 
 ```
+## 📋 Reglas OLAP / Analíticas (Business Intelligence)
+
+Para garantizar la integridad del modelo dimensional y la eficiencia del proceso analítico, se implementaron las siguientes reglas de negocio en el Data Warehouse:
+
+| ID | Regla de Negocio | Tipo | Implementación / Componentes |
+| :---: | :--- | :---: | :--- |
+| **RN-BI-01** | La tabla de hechos `FactOrders` debe tener claves sustitutas (SK) para todas las dimensiones. | 🏗️ <br>`Estructural` | Claves subrogadas implementadas:<br>• `CustomerSK`, `ProductSK`, `EmployeeSK`<br>• `ShipperSK`, `OrderDateSK`<br>• `RequiredDateSK`, `ShippedDateSK` |
+| **RN-BI-02** | Las métricas de ventas deben precalcularse para optimizar los tiempos de respuesta en reportes. | ⚡ <br>`Rendimiento` | Campos calculados nativos en la tabla de hechos:<br>• `DiscountAmount`<br>• `NetOrders`<br>• `GrossRevenue` |
+| **RN-BI-03** | El análisis temporal requiere una dimensión dedicada con atributos detallados (año, trimestre, mes, día, fin de semana). | 📊 <br>`Analítica` | Dimensión física: `DimDate` |
+| **RN-BI-04** | Las claves de negocio originales de los sistemas transaccionales deben conservarse para auditoría. | 🔍 <br>`Trazabilidad` | Columnas de linaje `OrderID` y `ProductID` mapeadas directamente en `FactOrders`. |
+| **RN-BI-05** | Los datos deben ser extraídos y centralizados en un área temporal antes de la transformación final. | 🔄 <br>`ETL` | Aislamiento de carga mediante el esquema `staging`. |
+| **RN-BI-06** | El sistema debe identificar de forma automatizada los nuevos registros para optimizar la ventana de carga. | ⚙️ <br>`ETL` | Control de delta mediante tabla `PackageConfig` evaluando la columna `LastRowVersion`. |
+
+---
 # 📦 Gestión de Esquema con DACPAC
 
 Este proyecto utiliza **SQL Server Data Tools (SSDT)** en Visual Studio para la gestión del ciclo de vida de la base de datos, permitiendo un despliegue consistente y versionado del esquema del Data Warehouse.
