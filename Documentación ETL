@@ -1,0 +1,38 @@
+
+🔄 Proceso ETL — NorthwindETL (SSIS)
+
+El proceso de carga de datos se realizó mediante SQL Server Integration Services (SSIS), automatizando la extracción, transformación y carga desde **NorthWindOLTP** hacia **NorthWindDW**.
+
+🗺️ Flujo de Datos (Arquitectura)
+
+ NorthWindOLTP (Fuente)
+       │
+       ├─── Customer.dtsx ────▶ DimCustomer
+       ├─── Employee.dtsx ────▶ DimEmployee
+       ├─── Products.dtsx ────▶ DimProduct
+       ├─── Shipper.dtsx  ────▶ DimShipper
+       │        └─ (DimDate se genera desde script SQL)
+       │
+       └─── Orders.dtsx ───────▶ FactOrders
+                                   │
+                            NorthWindDW (Destino)
+
+
+Instrucciones son para desplegar el proyecto en **SQL Server** utilizando
+   - Hacer clic en "Publish" para ejecutar el despliegue
+   - Verificar que no haya errores en la salida
+
+ **Configurar las conexiones para source y target en los ETL**
+   - Abrir un archivo .dtsx y hacer click derecho en el lienzo → "Conexiones"
+   - Click derecho en la conexion source.NorthWindOLTP, seleccionar el servidor y la base de datos OLTP
+   - Click derecho en la conexion target.NorthWindOLAP, seleccionar el servidor y la base de datos DW
+   - Realizar esto para cada archivo .dtsx
+
+ **Desplegar todos los ETL en SQL Server**
+   - Click derecho en un archivo .dtsx → "Desplegar"
+   - Seleccionar el paquete SSIS de sql server y aceptar
+
+ **Configurar Job**
+   - Abrir SQL Server e ir a la parte de agente → "Trabajo" → "Nuevo trabajo"
+   - Ir a la seccion de "Pasos" y seleccionar todos los archivos .dtsx, dejar el Sales.dtsx para el ultimo paso con instrucciones de salir al ejecutar exitosamente
+   - Ir a la seccion de "Temporizador" y crear uno nuevo segun las reglas del negocio.
