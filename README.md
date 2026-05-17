@@ -281,6 +281,8 @@ El proceso de carga de datos se realizó mediante SQL Server Integration Service
 
 ```
 ## Ejecucion del ETL 
+<img width="663" height="177" alt="image" src="https://github.com/user-attachments/assets/17fc2814-05ea-4d0b-87a2-a65b137bb906" />
+
 
 # ⚙️ Instrucciones de Despliegue
 ### 📜 Opción A: 
