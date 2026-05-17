@@ -96,7 +96,7 @@ Componentes principales:
 A continuación, se presentan los diagramas que representan la estructura técnica del proyecto, desde su origen transaccional hasta su destino analítico.
 
 ### 📑Modelo de Datos NorthWind_DW
-![Modelo de Datos NorthWind_DW](imgs/Data_DW.png)
+![Modelo de Datos NorthWind_DW](imgs/Data_NW.png)
 
 ### 📑Modelo de Datos NorthWind_DW (Tablas Staging)
 ![Modelo de Datos NorthWind_DW_Staging](imgs/Staging_Data.png)
