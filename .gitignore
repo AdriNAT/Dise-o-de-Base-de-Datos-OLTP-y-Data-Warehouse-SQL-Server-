@@ -4,5 +4,11 @@
 *.ncb
 *.suo
 *.dbmdl
- 
+ # Ignorar carpetas de compilación temporales de Visual Studio / SSAS
+NorthWindOLAP/bin/
+NorthWindOLAP/obj/
+bin/
+obj/
+*.dbmdl
+*.asdatabase
  
